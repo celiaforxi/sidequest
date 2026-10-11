@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#245b46">
+  <meta name="description" content="SideQuest 动态旅行规划原型。在计划之外，也能找到好去处。">
+  <title>SideQuest — 让旅途，随你而变</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23245b46'/%3E%3Cpath d='M9 23L23 9M10 9h13v13' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs?v=4"></script>
+</head>
+<body>
+  <header class="topbar"><a href="./" class="brand" aria-label="SideQuest 首页"><span class="brand-mark">↗</span>SideQuest<span class="brand-period">.</span></a><nav aria-label="主导航"><button class="nav-link active" id="today-nav">我的旅程</button><button class="nav-link" id="history-button">最近计划 <span id="history-count">0</span></button></nav><span class="demo-badge">旅行数据 · 模拟</span></header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow">A LITTLE PLAN. A LITTLE WANDER.</p><h1 id="hero-title">让旅途，<br>随你而变<span>↗</span></h1><p>计划可以变，好心情不用。<br>把意外交给我，把今天留给你。</p></div><div class="hero-image" id="hero-image"><div class="photo-label"><span>PARIS, FRANCE · 插画</span><span>下一站，也可以是惊喜。</span></div></div></section>
+    <div class="workspace">
+      <aside class="preferences panel"><div class="section-heading"><div><p class="eyebrow">YOUR TRAVEL DNA</p><h2>今天怎么逛？</h2></div><span class="small-symbol">↗</span></div>
+      <form id="plan-form">
+        <label>目的地<input name="city" list="cities" value="巴黎" maxlength="40" required placeholder="输入一座城市"><datalist id="cities"><option value="东京"><option value="巴黎"><option value="首尔"></datalist></label>
+        <div class="field-pair"><label>旅行日期<input type="date" name="date" required></label><label>起床时间<input type="time" name="wake" value="09:00" required></label></div>
+        <label>住宿区域<input name="hotel" value="圣日耳曼 / 左岸" placeholder="如：涩谷、左岸、弘大" maxlength="60" required></label>
+        <label>当日预算 <span class="muted">人民币 / 人，不含住宿</span><div class="money-input"><span>¥</span><input name="budget" type="number" min="50" max="50000" step="10" value="600" required></div></label>
+        <label>必去地点 <span class="muted">用逗号分隔</span><input name="must" value="卢浮宫，塞纳河畔散步" maxlength="180" placeholder="无论如何，都想去的地方"></label>
+        <fieldset><legend>旅行兴趣</legend><div class="chips interest-chips" id="interest-chips"></div></fieldset>
+        <fieldset><legend>此刻的心情 <span class="muted">Mood</span></legend><div class="chips mood-chips" id="mood-chips"></div></fieldset>
+        <label for="form-energy">出发时的体力 <span id="form-energy-value">4 / 5</span><input id="form-energy" name="energy" type="range" min="1" max="5" value="4"><span class="range-labels"><span>慢慢来</span><span>尽情探索</span></span></label>
+        <button class="button primary full" id="generate-button" type="submit">生成我的一天 <span>↗</span></button><p class="form-footnote">东京 / 巴黎 / 首尔有示例地点；其他城市生成待核实的通用行程。</p>
+      </form></aside>
+      <section class="itinerary" aria-labelledby="plan-title"><div class="section-heading plan-heading"><div><p class="eyebrow" id="plan-eyebrow">YOUR DAY, YOUR WAY</p><h2 id="plan-title">巴黎的一天</h2></div><span class="version-tag" id="version-tag">示例预览</span></div><div id="plan-meta" class="plan-meta"></div><div class="plan-notice" id="plan-notice">这是巴黎示例。调整左侧偏好，生成属于你的一天。</div><div id="plan-stats" class="plan-stats"></div><div id="timeline" class="timeline"></div><div id="deferred"></div><div id="plan-tail" class="plan-tail"></div></section>
+      <aside class="insights"><section class="energy-panel panel"><div class="section-heading"><div><p class="eyebrow">CHECK IN WITH YOURSELF</p><h2>跟着体力走</h2></div><span class="energy-icon">ϟ</span></div><p>累了就慢一点。切换体力，调整剩余行程。</p><div class="energy-steps" id="energy-steps" role="group" aria-label="切换体力并重新规划"></div><div id="energy-description" class="energy-description"></div></section>
+      <section class="change-preview"><span class="spark">↗</span><p class="eyebrow">ROOM FOR THE UNEXPECTED</p><h2>计划之外，<br>也有好风景。</h2><p>睡过头？突然下雨？<br>换个走法，继续享受今天。</p><button class="text-button" id="open-change-side">试试重新规划 <span>→</span></button></section>
+      <section id="reason-panel" class="reason-panel panel" aria-live="polite"></section>
+      <p class="data-note">关于这些信息<br>地点、费用、交通耗时与路线均为演示估算。未接入实时地图、天气、排队或营业时间，AI 仅用于理解需求，具体模式会单独标注。</p></aside>
+    </div>
+    <footer><span>SideQuest — Make room for a little detour.</span><span>随心出发 · 从容转弯</span></footer>
+  </main>
+  <div class="change-dock"><button id="open-change" aria-haspopup="dialog"><span class="dock-icon">↗</span><span><strong>Something changed?</strong><small>告诉我发生了什么，一起调整今天</small></span><span class="dock-arrow">→</span></button></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="change-dialog" aria-labelledby="change-title"><div class="dialog-heading"><div><p class="eyebrow">LET’S TAKE A DETOUR</p><h2 id="change-title">今天有什么变化？</h2></div><button class="close-button" data-close="change-dialog" aria-label="关闭">×</button></div><p class="dialog-description">告诉我现在的情况，已到访的地点会保留。</p><form id="change-form"><label for="planning-mode">需求识别方式</label><select id="planning-mode"><option value="ai">AI · 后端大模型</option><option value="mock">Mock · 固定模拟响应（非 AI）</option><option value="rules">关键词规则 · 不调用 AI</option></select><p id="mode-status" class="dialog-hint">关键词模式在浏览器中也可运行。</p><label for="change-input" class="sr-only">突发情况</label><textarea id="change-input" maxlength="300" rows="3" required placeholder="比如：睡过头两小时，而且下雨了…"></textarea><div class="chips event-chips" id="event-chips"></div><div class="field-pair"><label>调整基准时间<input type="time" id="change-time" required></label><label>排队影响的地点<select id="change-target"></select></label></div><p class="dialog-hint">迟到时长会加在基准时间上。支持迟到、下雨、排队、疲劳、想吃和想逛；AI 有歧义时会请求补充，关键词模式仅匹配预设表达。真实 AI 会将本次原话与待到访地点名称发送至当前配置的模型服务商；不会发送预算、住宿或完整历史。</p><p class="form-error" id="change-error" role="alert" hidden></p><div id="recognition-preview" class="recognition-preview" hidden></div><button type="button" class="undo-button" id="local-fallback" hidden>使用本地关键词规则处理同一句话</button><button class="button primary full" type="submit" id="replan-button">重新安排今天 <span>↗</span></button></form></dialog>
+  <dialog id="history-dialog" aria-labelledby="history-title"><div class="dialog-heading"><div><p class="eyebrow">YOUR RECENT ADVENTURES</p><h2 id="history-title">最近计划</h2></div><button class="close-button" data-close="history-dialog" aria-label="关闭">×</button></div><p class="dialog-description">最多保存最近 6 个计划，仅保存在当前浏览器。</p><div id="history-list"></div></dialog>
+</body>
+</html>
