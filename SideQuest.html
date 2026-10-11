@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#245b46">
+  <meta name="description" content="SideQuest 动态旅行规划原型。在计划之外，也能找到好去处。">
+  <title>SideQuest — 让旅途，随你而变</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23245b46'/%3E%3Cpath d='M9 23L23 9M10 9h13v13' fill='none' stroke='white' stroke-width='3'/%3E%3C/svg%3E">
+  <style>@charset "UTF-8";
+.hero-image{background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDcwMCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Q5ZTNkOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0ZThjZiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJ3YXRlciIgeDI9IjEiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjOTJhYmEzIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZDZkNWI0Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZmlsbD0idXJsKCNza3kpIiBkPSJNMCAwaDEwMDB2NzAwSDB6Ii8+PGNpcmNsZSBjeD0iNzcwIiBjeT0iMTQ1IiByPSI2MiIgZmlsbD0iI2ZhZjJkYiIvPjxnIGZpbGw9IiNiY2MyYjEiPjxwYXRoIGQ9Ik0wIDM3MGgxMTB2LTM1aDEwMHY0NWgxMjV2LTIwaDE1NXY1NUgweiIvPjxwYXRoIGQ9Ik02NjUgMzcwaDc1di00NWg5NXYzNWgxNjV2OTBINjY1eiIvPjwvZz48ZyBmaWxsPSIjZDhjYmIwIiBzdHJva2U9IiNhNjllODUiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTAgNDAwaDEyNXYxNzBIMHpNMTQ1IDM5MGgxMjB2MTgwSDE0NXpNNzY1IDM5NWgxMjB2MTc1SDc2NXpNOTA1IDQxMGg5NXYxNjBIOTA1eiIvPjwvZz48ZyBzdHJva2U9IiM4OTk1ODIiIHN0cm9rZS13aWR0aD0iMTAiPjxwYXRoIGQ9Ik0zMCA0MzB2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNzUtMzd2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNTUwLTIydjI3bTQwLTI3djI3bS04MDUgMjB2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNzUtMzd2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNTUwLTIydjI3bTQwLTI3djI3bTEwMC0zMHYyN20zNS0yN3YyNyIvPjwvZz48cGF0aCBmaWxsPSJ1cmwoI3dhdGVyKSIgZD0iTTAgNTYwUTQxMCA1MDUgMTAwMCA1MzVWNzAwSDB6Ii8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjdlZGNmIiBzdHJva2Utd2lkdGg9IjMiIG9wYWNpdHk9Ii42Ij48cGF0aCBkPSJNMzUgNjAxaDE5NW0xNTAgMjVoMjg1bTU1LTQ5aDIwME0yMCA2NjVoMzQwbTM3MC0xNWgyMjAiLz48L2c+PGcgZmlsbD0iIzViNzE2NSI+PHBhdGggZD0iTTUwMiAxMDhoOWwxNCAxMDQgMjEgMTEwIDQzIDExNSA2NCAxMjZoLTU0bC0zOC03NGgtOTlsLTM3IDc0aC01NGw2NS0xMjYgNDMtMTE1IDIxLTExMHoiLz48cGF0aCBkPSJNNDczIDI1NGg2NnYxMmgtNjZ6TTQ1MCAzNDFoMTEzdjE1SDQ1MHpNNDE0IDQzNmgxODd2MTdINDE0eiIvPjwvZz48ZyBmaWxsPSJ1cmwoI3NreSkiPjxwYXRoIGQ9Ik01MDcgMTY2bC0xMCA4MGgxOXpNNDk1IDI3OGwtMTMgNDhoNTBsLTE0LTQ4ek00NzggMzY3bC0yMCA1M2g5OGwtMjEtNTN6TTQ4MCA0NjFxMjctMzEgNTQgMGwxNSAxOWgtODR6Ii8+PC9nPjxnIHN0cm9rZT0iIzc4OGE3NSIgc3Ryb2tlLXdpZHRoPSIzIj48cGF0aCBkPSJNNDg0IDI5MGw0NSAyOW0tMi0yOWwtNDUgMjltLTggNjFsNzAgMzRtLTUtMzRsLTc0IDM0Ii8+PC9nPjxwYXRoIGQ9Ik0wIDU0M3EyMTAtMzAgMzkwIDJtMjIwIDBxMTkwLTIwIDM5MC00IiBmaWxsPSJub25lIiBzdHJva2U9IiM3Yzg4NzQiIHN0cm9rZS13aWR0aD0iMTQiLz48ZyBmaWxsPSIjNDA1ZTRmIj48cGF0aCBkPSJNMCAwaDQwdjcwMEgweiIvPjxjaXJjbGUgY3g9IjQyIiBjeT0iNjUiIHI9IjE2MCIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMjIwIiByPSI5MCIvPjxjaXJjbGUgY3g9Ii01IiBjeT0iMzMwIiByPSIxMDAiLz48L2c+PGcgZmlsbD0iIzYzN2Q1ZCI+PGNpcmNsZSBjeD0iMTYwIiBjeT0iNDAiIHI9IjY1Ii8+PGNpcmNsZSBjeD0iMTEwIiBjeT0iMTM3IiByPSI3NSIvPjwvZz48cGF0aCBkPSJNMCA2NzBxNDUwLTQ0IDEwMDAtOHYzOEgwIiBmaWxsPSIjZTVkNWI3Ii8+PC9zdmc+')}
+:root{--bg:#f5f7f5;--paper:#fff;--ink:#22392f;--muted:#6e7b74;--line:#e2e8e3;--green:#245b46;--pale:#eaf1e9;--soft:#f0f3ef;--radius:18px;color-scheme:light;font-family:"Avenir Next","PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;color:var(--ink);background:var(--bg)}*{box-sizing:border-box}body{margin:0}button,input,select,textarea{font:inherit}button,a,input,select,textarea{-webkit-tap-highlight-color:transparent}button{cursor:pointer}button{color:inherit}button:disabled{cursor:wait;opacity:.65}a{color:inherit;text-decoration:none}button,input,textarea,select{outline-offset:4px}button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid #5f956c}button{border:0}button,.chip,input,select,textarea{transition:background .18s,border-color .18s,transform .18s}h1,h2,h3,p{margin:0}h2{font-size:21px;letter-spacing:-.5px;font-weight:650}h3{font-size:17px;line-height:1.6}p{line-height:1.7}.topbar{height:88px;max-width:1512px;margin:auto;padding:0 5%;display:flex;align-items:center;gap:70px;border-bottom:1px solid var(--line)}.brand{font-size:28px;font-weight:750;letter-spacing:-1.6px;display:flex;align-items:center;gap:10px}.brand-mark{display:grid;place-items:center;width:33px;height:33px;background:var(--green);border-radius:10px;color:white;font-size:28px;font-weight:500;transform:rotate(-7deg)}.brand-period{color:#6a925c;margin-left:-10px}.topbar nav{display:flex;gap:30px;align-self:stretch}.nav-link{position:relative;padding:0 0;background:none;font-size:14px;color:var(--muted)}.nav-link.active{color:var(--green);font-weight:600}.nav-link.active:after{content:"";position:absolute;height:2px;background:var(--green);bottom:0;left:0;right:0}.nav-link span{background:#e6ebe5;border-radius:5px;font-size:12px;padding:2px 5px;margin-left:5px}.demo-badge{margin-left:auto;font-size:12px;border:1px solid #cbd7cc;padding:7px 12px;border-radius:20px;white-space:nowrap}.shell{max-width:1512px;margin:auto;padding:30px 5% 120px}.hero{min-height:252px;display:grid;grid-template-columns:40% 60%;background:#e9efe8;border-radius:22px;overflow:hidden;margin-bottom:34px}.hero-copy{padding:30px 38px;position:relative}.eyebrow{font-size:10px;letter-spacing:1.7px;font-weight:600;color:var(--muted);line-height:1.5}.hero h1{font-size:43px;font-weight:650;line-height:1.3;letter-spacing:-1.5px;margin:12px 0}.hero h1 span{display:inline-block;color:#628a5d;font-weight:400;margin-left:15px}.hero-copy>p:last-child{font-size:14px;line-height:1.9;color:#667a6b}.hero-image{position:relative;min-height:252px;background-color:#8eaaa1;background-position:center 54%;background-size:cover}.hero-image:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(15,36,28,.6),transparent 60%)}.photo-label{position:absolute;bottom:24px;left:28px;right:28px;color:white;z-index:1;display:flex;justify-content:space-between;align-items:center;font-size:12px;letter-spacing:1px}.photo-label span:first-child{font-size:11px;letter-spacing:2px}.workspace{display:grid;grid-template-columns:280px minmax(330px,1fr) 275px;gap:28px;align-items:start}.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:24px}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:23px}.section-heading .eyebrow{font-size:9px;letter-spacing:1.25px;margin-bottom:6px}.small-symbol{font-size:25px;color:#81947e}.preferences label,fieldset{display:block;margin:0 0 18px;font-size:14px;font-weight:500;min-width:0}fieldset{padding:0;border:0}legend{padding:0;margin-bottom:10px}label>.muted{display:block;font-weight:400;font-size:12px;margin:3px 0 7px;color:var(--muted)}input:not([type=range]),select,textarea{display:block;width:100%;min-width:0;border:1px solid var(--line);background:#fcfdfb;border-radius:8px;padding:11px 12px;font-size:14px;color:var(--ink);margin-top:8px;line-height:1.5}input:hover,select:hover,textarea:hover{border-color:#96b49c}input[type=date],input[type=time]{padding:11px 6px;font-size:13px;min-height:45px}.field-pair{display:grid;grid-template-columns:1.16fr 1fr;gap:10px}.money-input{position:relative}.money-input span{position:absolute;top:12px;left:13px;color:var(--muted)}.money-input input{padding-left:30px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{background:#fff;border:1px solid var(--line);border-radius:7px;padding:7px 10px;font-size:12px;line-height:1.4}.chip[aria-pressed=true]{background:var(--pale);border-color:#a7bda6;color:var(--green)}.chip:hover{background:var(--soft);border-color:#91ae97}.mood-chips .chip{padding:7px 9px}.muted{font-weight:400;color:var(--muted);font-size:12px}#form-energy-value{float:right;color:var(--green);font-size:13px}input[type=range]{width:100%;accent-color:var(--green);margin:15px 0 4px;height:18px;cursor:pointer}.range-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);font-weight:400}.button{min-height:47px;padding:12px 16px;border-radius:9px;display:flex;align-items:center;justify-content:center;gap:18px;font-size:14px;font-weight:600}.button:hover{transform:translateY(-1px)}.primary{background:var(--green);color:#fff}.primary:hover{background:#194934}.full{width:100%}.form-footnote{font-size:12px;font-weight:400;color:var(--muted);margin-top:12px;line-height:1.7}.plan-heading{margin:4px 0 12px}.plan-heading h2{font-size:26px}.version-tag{font-size:12px;white-space:nowrap;background:var(--pale);padding:6px 10px;border-radius:6px;color:var(--green)}.plan-meta{font-size:12px;color:var(--muted);display:flex;gap:10px;flex-wrap:wrap;line-height:1.8}.plan-notice{font-size:12px;color:#5c735e;line-height:1.8;margin:16px 0;background:#eaf0e7;border-radius:9px;padding:11px 14px}.plan-stats{display:grid;grid-template-columns:repeat(3,1fr);padding:0 0 20px;border-bottom:1px solid var(--line);margin-bottom:25px;gap:5px}.stat{border-right:1px solid var(--line);text-align:center}.stat:first-child{text-align:left}.stat:last-child{border:0}.stat strong{font-size:23px;font-weight:600;letter-spacing:-.8px}.stat small{font-size:12px;color:var(--muted);margin-left:3px}.stat p{font-size:11px;color:var(--muted);margin-top:2px}.timeline{position:relative}.stop{display:grid;grid-template-columns:53px 1fr;gap:15px;position:relative}.stop:before{content:"";position:absolute;left:23px;top:38px;bottom:0;border-left:1px dashed #c9d7c9}.stop:last-child:before{display:none}.time-stamp{font-size:13px;font-weight:600;text-align:center;padding-top:17px;background:var(--bg);height:39px;position:relative;z-index:1}.stop-card{border:1px solid var(--line);border-radius:13px;background:white;padding:17px 18px;min-width:0;position:relative;animation:enter .28s ease both}.stop-card.completed{opacity:.65;background:#f0f3f0}.stop-top{display:flex;align-items:center;justify-content:space-between;gap:5px}.stop-kind{font-size:11px;color:#6b7b6f;letter-spacing:.3px}.stop-badges{display:flex;gap:5px;align-items:center}.badge{font-size:10px;padding:3px 6px;border-radius:4px;white-space:nowrap;background:var(--soft);color:#637b63}.badge.must{background:#edf0e2;color:#626d3e}.badge.added{background:#ddecdf;color:#2e6139}.badge.moved{background:#f5ecd9;color:#806237}.stop h3{margin:7px 0 6px;font-size:17px}.stop-detail{font-size:12px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}.stop-desc{font-size:13px;color:#6d7b71;margin-top:10px;line-height:1.8}.stop-bottom{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:13px;padding-top:10px;border-top:1px solid #eef1ed}.stop-area{font-size:11px;color:#7a877d;overflow-wrap:anywhere}.done-button{font-size:11px;background:none;color:var(--green);white-space:nowrap;padding:4px}.done-button:hover{background:var(--pale);border-radius:4px}.transfer{grid-column:2;padding:10px 0 14px 16px;color:#8b958c;font-size:11px;letter-spacing:.3px}.plan-tail{padding:14px 0 0 68px;font-size:12px;color:var(--muted);line-height:1.8}.deferred{margin:20px 0 0 68px;border:1px dashed #cbd7c9;border-radius:10px;padding:15px;background:#f0f3ec}.deferred h3{font-size:14px;margin-bottom:6px}.deferred p{font-size:12px;line-height:1.9}.energy-panel{padding:23px}.energy-panel .section-heading{margin-bottom:13px}.energy-panel h2{font-size:19px}.energy-icon{font-size:35px;color:#719566}.energy-panel>p{font-size:13px;color:var(--muted)}.energy-steps{display:flex;gap:7px;margin:19px 0 11px}.energy-steps button{flex:1;height:36px;background:#f0f3ee;color:#748471;border:1px solid transparent;border-radius:8px;font-size:14px}.energy-steps button[aria-pressed=true]{background:var(--green);color:white}.energy-steps button:hover{border-color:#8aa385}.energy-description{font-size:12px;color:var(--green);text-align:center;line-height:1.8}.change-preview{position:relative;background:#e2eadc;padding:27px 24px;border-radius:var(--radius);margin-top:20px;overflow:hidden}.change-preview .eyebrow{font-size:9px;letter-spacing:1px}.change-preview h2{font-size:25px;line-height:1.6;margin:15px 0 12px;font-weight:550}.change-preview>p:not(.eyebrow){font-size:13px;color:#63765f;line-height:1.9}.spark{position:absolute;right:15px;top:46px;font-size:64px;font-weight:300;color:#9fb68b;transform:rotate(8deg)}.text-button{background:none;padding:18px 0 0;font-size:13px;font-weight:600;display:flex;justify-content:space-between;width:100%}.text-button span{font-size:19px}.reason-panel{margin-top:20px;padding:22px}.reason-panel h2{font-size:17px;margin-bottom:12px}.reason-panel>p{font-size:13px;color:var(--muted)}.reason-list{margin:14px 0 0;padding:0;list-style:none}.reason-list li{padding:13px 0;border-top:1px solid var(--line);font-size:12px}.reason-list strong{display:block;margin:7px 0 4px;font-size:13px;font-weight:600}.reason-list p{color:var(--muted);line-height:1.8}.change-counts{display:flex;gap:8px;flex-wrap:wrap;font-size:11px;color:var(--green);padding:10px 0}.reason-summary{font-size:13px;line-height:1.8;white-space:pre-line}.reason-panel details summary{cursor:pointer;font-size:13px;margin-top:14px;color:var(--green)}.undo-button{padding:11px;background:var(--soft);color:var(--green);border-radius:7px;width:100%;font-size:12px;margin-top:13px}.data-note{font-size:11px;color:#7d8a7f;line-height:1.9;margin:21px 10px}.data-note:first-line{font-weight:600;color:#617565}.change-dock{position:fixed;bottom:23px;left:50%;transform:translateX(-50%);width:460px;max-width:calc(100% - 32px);z-index:5}.change-dock>button{width:100%;display:flex;align-items:center;gap:16px;text-align:left;background:#1f4839;color:#fff;border-radius:15px;padding:16px 21px;box-shadow:0 7px 26px #193a352b;border:1px solid #ffffff24}.dock-icon{font-size:29px;background:#ffffff14;border-radius:10px;width:39px;height:39px;display:grid;place-items:center}.change-dock strong{font-size:16px;letter-spacing:.1px;font-weight:550}.change-dock small{display:block;color:#c2d4c4;font-size:11px;margin-top:5px}.dock-arrow{font-size:23px;margin-left:auto}.change-dock button:hover{background:#2b5c47}footer{margin-top:50px;padding-top:23px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;font-size:11px;color:#859087}dialog{border:1px solid var(--line);border-radius:22px;width:540px;max-width:calc(100vw - 28px);max-height:calc(100dvh - 40px);padding:28px;color:var(--ink);box-shadow:0 24px 80px #142c3330;overflow:auto}dialog::backdrop{background:#192e2a60;backdrop-filter:blur(4px)}.dialog-heading{display:flex;justify-content:space-between;gap:16px;align-items:center}.dialog-heading h2{font-size:25px;margin-top:6px}.close-button{font-size:25px;background:var(--soft);width:34px;height:34px;border-radius:50%;flex-shrink:0;line-height:1}.dialog-description{font-size:14px;color:var(--muted);margin:15px 0 20px}textarea{resize:vertical;font-size:15px;min-height:100px}.event-chips{margin:14px 0 22px}.event-chips .chip{font-size:12px}.dialog-hint{font-size:12px;color:var(--muted);margin:15px 0 22px}dialog label{font-size:13px}.form-error{font-size:13px;background:#faeee8;color:#904d39;border-radius:7px;padding:10px;margin:12px 0}.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#223d31;color:white;padding:13px 22px;border-radius:12px;box-shadow:0 4px 20px #24473128;font-size:14px;z-index:30;max-width:90vw}.history-item{border-top:1px solid var(--line);padding:18px 0;display:flex;align-items:center;gap:15px}.history-item h3{font-size:17px}.history-item p{font-size:12px;color:var(--muted);margin-top:5px}.history-item .button{margin-left:auto;min-height:37px;padding:9px 13px;font-size:12px;white-space:nowrap;background:var(--pale);color:var(--green)}.empty-state{text-align:center;padding:35px 10px;color:var(--muted);font-size:14px;line-height:1.9}.sr-only{position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden;white-space:nowrap}.no-plan{padding:24px;background:white;border-radius:13px;font-size:14px;line-height:1.9}.loading .stop-card{background:linear-gradient(100deg,#edf1ec 30%,#fafbf9 50%,#edf1ec 70%);background-size:200% 100%;animation:shimmer 1.3s infinite}.loading .stop-card>*{visibility:hidden}@keyframes shimmer{to{background-position:-200% 0}}@keyframes enter{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}@media(min-width:1600px){.workspace{grid-template-columns:300px minmax(400px,1fr) 295px;gap:35px}.hero{grid-template-columns:38% 62%}}@media(max-width:1180px){.shell,.topbar{padding-left:28px;padding-right:28px}.workspace{grid-template-columns:250px minmax(310px,1fr);gap:26px}.insights{grid-column:2;display:grid;grid-template-columns:1fr 1fr;gap:16px}.preferences{grid-row:1/3}.change-preview{margin-top:0}.reason-panel{grid-column:1/-1;margin-top:0}.data-note{grid-column:1/-1;margin:0}.hero{grid-template-columns:43% 57%}.hero h1{font-size:38px}.hero-copy{padding:30px}.panel{padding:20px}.hero-copy .eyebrow{font-size:9px}}@media(max-width:760px){.topbar{height:73px;padding:0 20px;gap:22px}.brand{font-size:24px;gap:8px}.brand-mark{width:29px;height:29px;font-size:24px}.topbar nav{margin-left:auto;gap:18px}.nav-link{font-size:13px}.topbar .demo-badge{display:none}.shell{padding:20px 18px 110px}.hero{min-height:200px;grid-template-columns:1fr 42%;margin-bottom:24px;border-radius:15px}.hero-copy{padding:23px 20px}.hero h1{font-size:31px;letter-spacing:-1px;margin:11px 0}.hero-copy .eyebrow{font-size:8px;letter-spacing:1px;max-width:160px}.hero-copy>p:last-child{font-size:12px}.hero-image{min-height:210px}.photo-label{left:14px;bottom:17px;right:10px}.photo-label span:first-child{font-size:9px;letter-spacing:1px}.photo-label span:last-child{display:none}.workspace{display:flex;flex-direction:column;gap:27px}.preferences,.itinerary,.insights{width:100%}.preferences{padding:22px}.preferences form{display:grid;grid-template-columns:1fr 1fr;gap:16px}.preferences label,.preferences fieldset{margin:0}.preferences .field-pair{grid-column:1/-1}.preferences label:has([name=must]),.preferences fieldset,.preferences label:has([type=range]),.preferences .button,.form-footnote{grid-column:1/-1}.form-footnote{margin:0}.preferences label>.muted{font-size:11px}.preferences .chip{font-size:13px;padding:8px 12px}.insights{display:grid;grid-template-columns:1fr 1fr;gap:14px}.energy-panel,.change-preview{padding:20px 16px}.energy-panel .eyebrow,.change-preview .eyebrow{font-size:8px;letter-spacing:.7px}.energy-panel h2{font-size:17px}.energy-icon{font-size:25px}.energy-steps{gap:4px}.energy-steps button{height:32px}.energy-panel>p,.change-preview>p:not(.eyebrow){font-size:12px}.change-preview h2{font-size:21px}.spark{font-size:43px;top:57px;right:11px}.reason-panel{grid-column:1/-1}.data-note{font-size:11px}.plan-heading h2{font-size:25px}.change-dock{bottom:12px;width:420px}.change-dock>button{padding:13px 17px;border-radius:13px}.change-dock strong{font-size:15px}.change-dock small{font-size:10px}.stop{grid-template-columns:45px 1fr;gap:9px}.stop:before{left:20px}.stop-card{padding:16px}.time-stamp{font-size:12px}.stop h3{font-size:17px}.deferred,.plan-tail{margin-left:54px;padding-left:14px}.plan-tail{margin:0;padding-left:54px}footer{font-size:10px;display:block;margin-top:30px}footer span{display:block;margin-top:6px}dialog{padding:24px 20px}.dialog-heading h2{font-size:23px}.reason-panel{padding:22px}.plan-notice{font-size:12px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}[hidden]{display:none!important}
+/* Readable content and labels; small type is reserved for secondary metadata. */
+.chip,.mood-chips .chip{font-size:14px}.stop-desc,.energy-panel>p,.reason-panel>p,.reason-summary{font-size:14px}.reason-list strong,.reason-list p,.done-button,.text-button{font-size:14px}.stop-kind,.badge,.stop-area,.transfer,.stat p,.data-note,.eyebrow,.section-heading .eyebrow{font-size:12px}.change-preview .eyebrow{font-size:12px;letter-spacing:.5px}.energy-description,.plan-meta,.plan-notice{font-size:13px}.hero-copy>p:last-child{font-size:16px}.section-heading .eyebrow{letter-spacing:.5px}.event-chips .chip,dialog label,.history-item .button{font-size:14px}.energy-panel>p{line-height:1.8}.stop-desc{line-height:1.85}.brand-period{color:#456b3f}.hero .eyebrow{font-size:11px}.preferences .field-pair{grid-template-columns:1fr}.spark{opacity:.55}.change-preview h2{position:relative;z-index:1}.preferences label>.muted{font-size:12px}input[type=date],input[type=time]{font-size:14px}.stop-detail{font-size:13px}.reason-list li{font-size:13px}.change-dock small{font-size:12px}.hero-image{background-image:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAwIDcwMCI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJza3kiIHgyPSIwIiB5Mj0iMSI+PHN0b3Agc3RvcC1jb2xvcj0iI2Q5ZTNkOSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI2Y0ZThjZiIvPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJ3YXRlciIgeDI9IjEiIHkyPSIxIj48c3RvcCBzdG9wLWNvbG9yPSIjOTJhYmEzIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZDZkNWI0Ii8+PC9saW5lYXJHcmFkaWVudD48L2RlZnM+PHBhdGggZmlsbD0idXJsKCNza3kpIiBkPSJNMCAwaDEwMDB2NzAwSDB6Ii8+PGNpcmNsZSBjeD0iNzcwIiBjeT0iMTQ1IiByPSI2MiIgZmlsbD0iI2ZhZjJkYiIvPjxnIGZpbGw9IiNiY2MyYjEiPjxwYXRoIGQ9Ik0wIDM3MGgxMTB2LTM1aDEwMHY0NWgxMjV2LTIwaDE1NXY1NUgweiIvPjxwYXRoIGQ9Ik02NjUgMzcwaDc1di00NWg5NXYzNWgxNjV2OTBINjY1eiIvPjwvZz48ZyBmaWxsPSIjZDhjYmIwIiBzdHJva2U9IiNhNjllODUiIHN0cm9rZS13aWR0aD0iMyI+PHBhdGggZD0iTTAgNDAwaDEyNXYxNzBIMHpNMTQ1IDM5MGgxMjB2MTgwSDE0NXpNNzY1IDM5NWgxMjB2MTc1SDc2NXpNOTA1IDQxMGg5NXYxNjBIOTA1eiIvPjwvZz48ZyBzdHJva2U9IiM4OTk1ODIiIHN0cm9rZS13aWR0aD0iMTAiPjxwYXRoIGQ9Ik0zMCA0MzB2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNzUtMzd2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNTUwLTIydjI3bTQwLTI3djI3bS04MDUgMjB2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNzUtMzd2MjdtMzUtMjd2MjdtMzUtMjd2MjdtNTUwLTIydjI3bTQwLTI3djI3bTEwMC0zMHYyN20zNS0yN3YyNyIvPjwvZz48cGF0aCBmaWxsPSJ1cmwoI3dhdGVyKSIgZD0iTTAgNTYwUTQxMCA1MDUgMTAwMCA1MzVWNzAwSDB6Ii8+PGcgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZjdlZGNmIiBzdHJva2Utd2lkdGg9IjMiIG9wYWNpdHk9Ii42Ij48cGF0aCBkPSJNMzUgNjAxaDE5NW0xNTAgMjVoMjg1bTU1LTQ5aDIwME0yMCA2NjVoMzQwbTM3MC0xNWgyMjAiLz48L2c+PGcgZmlsbD0iIzViNzE2NSI+PHBhdGggZD0iTTUwMiAxMDhoOWwxNCAxMDQgMjEgMTEwIDQzIDExNSA2NCAxMjZoLTU0bC0zOC03NGgtOTlsLTM3IDc0aC01NGw2NS0xMjYgNDMtMTE1IDIxLTExMHoiLz48cGF0aCBkPSJNNDczIDI1NGg2NnYxMmgtNjZ6TTQ1MCAzNDFoMTEzdjE1SDQ1MHpNNDE0IDQzNmgxODd2MTdINDE0eiIvPjwvZz48ZyBmaWxsPSJ1cmwoI3NreSkiPjxwYXRoIGQ9Ik01MDcgMTY2bC0xMCA4MGgxOXpNNDk1IDI3OGwtMTMgNDhoNTBsLTE0LTQ4ek00NzggMzY3bC0yMCA1M2g5OGwtMjEtNTN6TTQ4MCA0NjFxMjctMzEgNTQgMGwxNSAxOWgtODR6Ii8+PC9nPjxnIHN0cm9rZT0iIzc4OGE3NSIgc3Ryb2tlLXdpZHRoPSIzIj48cGF0aCBkPSJNNDg0IDI5MGw0NSAyOW0tMi0yOWwtNDUgMjltLTggNjFsNzAgMzRtLTUtMzRsLTc0IDM0Ii8+PC9nPjxwYXRoIGQ9Ik0wIDU0M3EyMTAtMzAgMzkwIDJtMjIwIDBxMTkwLTIwIDM5MC00IiBmaWxsPSJub25lIiBzdHJva2U9IiM3Yzg4NzQiIHN0cm9rZS13aWR0aD0iMTQiLz48ZyBmaWxsPSIjNDA1ZTRmIj48cGF0aCBkPSJNMCAwaDQwdjcwMEgweiIvPjxjaXJjbGUgY3g9IjQyIiBjeT0iNjUiIHI9IjE2MCIvPjxjaXJjbGUgY3g9IjgwIiBjeT0iMjIwIiByPSI5MCIvPjxjaXJjbGUgY3g9Ii01IiBjeT0iMzMwIiByPSIxMDAiLz48L2c+PGcgZmlsbD0iIzYzN2Q1ZCI+PGNpcmNsZSBjeD0iMTYwIiBjeT0iNDAiIHI9IjY1Ii8+PGNpcmNsZSBjeD0iMTEwIiBjeT0iMTM3IiByPSI3NSIvPjwvZz48cGF0aCBkPSJNMCA2NzBxNDUwLTQ0IDEwMDAtOHYzOEgwIiBmaWxsPSIjZTVkNWI3Ii8+PC9zdmc+')}
+@media(max-width:760px){.preferences .field-pair{grid-template-columns:1fr 1fr}.hero-copy>p:last-child{font-size:13px}.hero .eyebrow{font-size:10px}.energy-panel .eyebrow,.change-preview .eyebrow{font-size:10px}.change-preview h2{font-size:20px}.energy-panel>p,.change-preview>p:not(.eyebrow){font-size:14px}.energy-panel .section-heading{gap:4px}.energy-icon{display:none}.stop-bottom{flex-wrap:wrap}.preferences input[type=date],.preferences input[type=time]{font-size:14px}.change-dock small{font-size:11px}.hero h1{font-size:29px}}
+@media(max-width:380px){.hero{grid-template-columns:1fr 35%}.hero-copy{padding:22px 16px}.hero h1{font-size:27px}.insights{grid-template-columns:1fr}.change-preview h2 br{display:none}.preferences form{grid-template-columns:1fr}.preferences label,.preferences .field-pair{grid-column:1/-1}.brand{font-size:21px}.topbar{gap:10px;padding:0 16px}.topbar nav{gap:12px}.reason-panel,.data-note{grid-column:1}}
+#planning-mode{margin-bottom:8px}#mode-status{margin:8px 0 18px}.recognition-preview{background:var(--pale);border:1px solid var(--line);border-radius:9px;padding:12px;margin:12px 0;font-size:13px;line-height:1.8}.recognition-preview strong{font-size:14px}.recognition-preview small{color:var(--muted);font-size:12px}#local-fallback{margin:8px 0 16px}
+</style>
+  
+</head>
+<body>
+  <header class="topbar"><a href="./" class="brand" aria-label="SideQuest 首页"><span class="brand-mark">↗</span>SideQuest<span class="brand-period">.</span></a><nav aria-label="主导航"><button class="nav-link active" id="today-nav">我的旅程</button><button class="nav-link" id="history-button">最近计划 <span id="history-count">0</span></button></nav><span class="demo-badge">旅行数据 · 模拟</span></header>
+  <main class="shell">
+    <section class="hero" aria-labelledby="hero-title"><div class="hero-copy"><p class="eyebrow">A LITTLE PLAN. A LITTLE WANDER.</p><h1 id="hero-title">让旅途，<br>随你而变<span>↗</span></h1><p>计划可以变，好心情不用。<br>把意外交给我，把今天留给你。</p></div><div class="hero-image" id="hero-image"><div class="photo-label"><span>PARIS, FRANCE · 插画</span><span>下一站，也可以是惊喜。</span></div></div></section>
+    <div class="workspace">
+      <aside class="preferences panel"><div class="section-heading"><div><p class="eyebrow">YOUR TRAVEL DNA</p><h2>今天怎么逛？</h2></div><span class="small-symbol">↗</span></div>
+      <form id="plan-form">
+        <label>目的地<input name="city" list="cities" value="巴黎" maxlength="40" required placeholder="输入一座城市"><datalist id="cities"><option value="东京"><option value="巴黎"><option value="首尔"></datalist></label>
+        <div class="field-pair"><label>旅行日期<input type="date" name="date" required></label><label>起床时间<input type="time" name="wake" value="09:00" required></label></div>
+        <label>住宿区域<input name="hotel" value="圣日耳曼 / 左岸" placeholder="如：涩谷、左岸、弘大" maxlength="60" required></label>
+        <label>当日预算 <span class="muted">人民币 / 人，不含住宿</span><div class="money-input"><span>¥</span><input name="budget" type="number" min="50" max="50000" step="10" value="600" required></div></label>
+        <label>必去地点 <span class="muted">用逗号分隔</span><input name="must" value="卢浮宫，塞纳河畔散步" maxlength="180" placeholder="无论如何，都想去的地方"></label>
+        <fieldset><legend>旅行兴趣</legend><div class="chips interest-chips" id="interest-chips"></div></fieldset>
+        <fieldset><legend>此刻的心情 <span class="muted">Mood</span></legend><div class="chips mood-chips" id="mood-chips"></div></fieldset>
+        <label for="form-energy">出发时的体力 <span id="form-energy-value">4 / 5</span><input id="form-energy" name="energy" type="range" min="1" max="5" value="4"><span class="range-labels"><span>慢慢来</span><span>尽情探索</span></span></label>
+        <button class="button primary full" id="generate-button" type="submit">生成我的一天 <span>↗</span></button><p class="form-footnote">东京 / 巴黎 / 首尔有示例地点；其他城市生成待核实的通用行程。</p>
+      </form></aside>
+      <section class="itinerary" aria-labelledby="plan-title"><div class="section-heading plan-heading"><div><p class="eyebrow" id="plan-eyebrow">YOUR DAY, YOUR WAY</p><h2 id="plan-title">巴黎的一天</h2></div><span class="version-tag" id="version-tag">示例预览</span></div><div id="plan-meta" class="plan-meta"></div><div class="plan-notice" id="plan-notice">这是巴黎示例。调整左侧偏好，生成属于你的一天。</div><div id="plan-stats" class="plan-stats"></div><div id="timeline" class="timeline"></div><div id="deferred"></div><div id="plan-tail" class="plan-tail"></div></section>
+      <aside class="insights"><section class="energy-panel panel"><div class="section-heading"><div><p class="eyebrow">CHECK IN WITH YOURSELF</p><h2>跟着体力走</h2></div><span class="energy-icon">ϟ</span></div><p>累了就慢一点。切换体力，调整剩余行程。</p><div class="energy-steps" id="energy-steps" role="group" aria-label="切换体力并重新规划"></div><div id="energy-description" class="energy-description"></div></section>
+      <section class="change-preview"><span class="spark">↗</span><p class="eyebrow">ROOM FOR THE UNEXPECTED</p><h2>计划之外，<br>也有好风景。</h2><p>睡过头？突然下雨？<br>换个走法，继续享受今天。</p><button class="text-button" id="open-change-side">试试重新规划 <span>→</span></button></section>
+      <section id="reason-panel" class="reason-panel panel" aria-live="polite"></section>
+      <p class="data-note">关于这些信息<br>地点、费用、交通耗时与路线均为演示估算。未接入实时地图、天气、排队或营业时间，AI 仅用于理解需求，具体模式会单独标注。</p></aside>
+    </div>
+    <footer><span>SideQuest — Make room for a little detour.</span><span>随心出发 · 从容转弯</span></footer>
+  </main>
+  <div class="change-dock"><button id="open-change" aria-haspopup="dialog"><span class="dock-icon">↗</span><span><strong>Something changed?</strong><small>告诉我发生了什么，一起调整今天</small></span><span class="dock-arrow">→</span></button></div>
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  <dialog id="change-dialog" aria-labelledby="change-title"><div class="dialog-heading"><div><p class="eyebrow">LET’S TAKE A DETOUR</p><h2 id="change-title">今天有什么变化？</h2></div><button class="close-button" data-close="change-dialog" aria-label="关闭">×</button></div><p class="dialog-description">告诉我现在的情况，已到访的地点会保留。</p><form id="change-form"><label for="planning-mode">需求识别方式</label><select id="planning-mode"><option value="ai">AI · 后端大模型</option><option value="mock">Mock · 固定模拟响应（非 AI）</option><option value="rules">关键词规则 · 不调用 AI</option></select><p id="mode-status" class="dialog-hint">关键词模式在浏览器中也可运行。</p><label for="change-input" class="sr-only">突发情况</label><textarea id="change-input" maxlength="300" rows="3" required placeholder="比如：睡过头两小时，而且下雨了…"></textarea><div class="chips event-chips" id="event-chips"></div><div class="field-pair"><label>调整基准时间<input type="time" id="change-time" required></label><label>排队影响的地点<select id="change-target"></select></label></div><p class="dialog-hint">迟到时长会加在基准时间上。支持迟到、下雨、排队、疲劳、想吃和想逛；AI 有歧义时会请求补充，关键词模式仅匹配预设表达。真实 AI 会将本次原话与待到访地点名称发送至当前配置的模型服务商；不会发送预算、住宿或完整历史。</p><p class="form-error" id="change-error" role="alert" hidden></p><div id="recognition-preview" class="recognition-preview" hidden></div><button type="button" class="undo-button" id="local-fallback" hidden>使用本地关键词规则处理同一句话</button><button class="button primary full" type="submit" id="replan-button">重新安排今天 <span>↗</span></button></form></dialog>
+  <dialog id="history-dialog" aria-labelledby="history-title"><div class="dialog-heading"><div><p class="eyebrow">YOUR RECENT ADVENTURES</p><h2 id="history-title">最近计划</h2></div><button class="close-button" data-close="history-dialog" aria-label="关闭">×</button></div><p class="dialog-description">最多保存最近 6 个计划，仅保存在当前浏览器。</p><div id="history-list"></div></dialog>
+<script type="module">// All durations, costs, zones and transit estimates are authored demo data.
+const INTERESTS = ['美食', '城市漫步', '艺术文化', '购物', '咖啡', '拍照'];
+const MOODS = ['随心逛逛', '慢慢放空', '多点探索'];
+const ENERGY = ['只想歇歇，留一个小惊喜', '轻松走走，给休息留点时间', '不赶不慢，刚刚好的节奏', '状态不错，去发现更多', '电量满格，尽情探索'];
+const place = (id, title, area, category, indoor, duration, cost, zone, description, aliases = []) => ({ id, title, area, category, indoor, duration, cost, zone, description, aliases });
+const CITIES = {
+  东京: { english: 'TOKYO', areas: ['涩谷','原宿','表参道'], places: [
+    place('tokyo-cafe','从一杯咖啡开始','涩谷','咖啡',true,45,45,0,'找个靠窗的位置，慢慢进入今天的节奏。'),
+    place('meiji','明治神宫','原宿','城市漫步',false,75,0,1,'沿着参道走走，把喧闹暂时留在城市里。',['Meiji Shrine']),
+    place('omotesando','表参道街区','表参道','拍照',false,60,0,2,'看看建筑和小店，不必急着走到终点。',['Omotesando']),
+    place('tokyo-lunch','街角日式定食','表参道','美食',true,60,85,2,'留出一顿认真吃饭的时间；店铺为演示占位。'),
+    place('nezu','根津美术馆 · 室内展厅','表参道','艺术文化',true,90,90,2,'给展览留一点耐心；开放与购票信息请自行核实。',['根津美术馆']),
+    place('shibuya','涩谷十字路口','涩谷','拍照',false,40,0,0,'在人潮交汇处，感受东京的另一种速度。',['Shibuya Crossing','涩谷路口']),
+    place('shibuya-parco','涩谷 PARCO','涩谷','购物',true,70,0,0,'在室内逛逛设计和生活方式商店。',['PARCO']),
+    place('tokyo-dinner','一顿暖心的晚餐','涩谷','美食',true,60,100,0,'餐厅待选择；此处只预留吃饭的时间。')
+  ]},
+  巴黎: { english:'PARIS', areas:['左岸','卢浮宫','玛黑区'], places:[
+    place('paris-cafe','左岸咖啡时光','左岸','咖啡',true,45,60,0,'喝一杯咖啡，给旅程一个缓缓的开始。'),
+    place('louvre','卢浮宫','卢浮宫','艺术文化',true,150,180,1,'示例预留两个半小时；实际预约与开放时间待核实。',['Louvre']),
+    place('tuileries','杜乐丽花园','卢浮宫','城市漫步',false,60,0,1,'走走停停，留一些空白给花园。'),
+    place('paris-lunch','街区小馆午餐','卢浮宫','美食',true,60,140,1,'餐馆待选择，费用为人民币演示估算。'),
+    place('orsay','奥赛博物馆','左岸','艺术文化',true,100,120,0,'室内展览候选；具体开放与预约信息待核实。'),
+    place('seine','塞纳河畔散步','左岸','拍照',false,60,0,0,'给河岸和沿途风景留出时间。'),
+    place('marais','玛黑区小店','玛黑区','购物',true,70,0,2,'用室内小店串起一段闲逛时间。'),
+    place('paris-dinner','法式小馆晚餐','左岸','美食',true,65,180,0,'餐厅为占位，消费仅供演示。')
+  ]},
+  首尔: { english:'SEOUL', areas:['弘大','景福宫','明洞'], places:[
+    place('seoul-cafe','弘大咖啡时光','弘大','咖啡',true,45,45,0,'坐下来喝杯咖啡，今天慢慢开始。'),
+    place('gyeongbok','景福宫','景福宫','艺术文化',false,90,25,1,'庭院与宫殿的示例游览，开放时间待核实。'),
+    place('bukchon','北村韩屋街区','景福宫','拍照',false,60,0,1,'街巷漫步；实际参观时段与社区规则待核实。'),
+    place('seoul-lunch','韩式家常午餐','景福宫','美食',true,60,70,1,'给午餐留出完整的一小时。'),
+    place('seoul-museum','国立现代美术馆 · 首尔馆','景福宫','艺术文化',true,90,45,1,'雨天室内候选；具体展览与营业信息待核实。'),
+    place('hongdae','弘大街区散步','弘大','城市漫步',false,60,0,0,'去街角找找让你想停下的地方。'),
+    place('myeongdong','明洞室内商店','明洞','购物',true,70,0,2,'逛店为示例；实际店铺仍需选择。'),
+    place('seoul-dinner','韩式烤肉晚餐','弘大','美食',true,70,110,0,'餐厅待选择，示例费用不含额外加点。')
+  ]}
+};
+function cityKey(city) { const key=city.trim().toLowerCase(); return ({tokyo:'东京',paris:'巴黎',seoul:'首尔'})[key] || city.trim(); }
+function catalogFor(city, hotel) {
+  const known=CITIES[cityKey(city)];
+  if(known) return { ...known, known:true, places:known.places.map(p=>({...p})) };
+  return {known:false,english:'A NEW ADVENTURE',areas:[hotel],places:[
+    place('custom-cafe','住宿附近的咖啡店（待选择）',hotel,'咖啡',true,45,40,0,'通用占位，未检索真实店铺。'),
+    place('custom-walk',`${city}街区漫步（待选区域）`,hotel,'城市漫步',false,60,0,0,'通用占位，路线与可步行性待核实。'),
+    place('custom-photo','城市拍照点（待选择）',hotel,'拍照',false,45,0,0,'通用占位，未核实位置。'),
+    place('custom-lunch','当地风味午餐（待选店）',hotel,'美食',true,60,70,0,'通用占位，不代表真实餐厅。'),
+    place('custom-art','室内展览（待选择）',hotel,'艺术文化',true,90,60,0,'通用占位，开放与票价待核实。'),
+    place('custom-rest','住宿附近休息',hotel,'咖啡',true,45,0,0,'可回住宿休息，不增加餐饮开销。'),
+    place('custom-shop','室内商店（待选择）',hotel,'购物',true,60,0,0,'通用占位，购物支出不计入估算。'),
+    place('custom-dinner','当地晚餐（待选店）',hotel,'美食',true,60,90,0,'通用占位，具体店铺待选择。')
+  ]};
+}
+
+// Shared contract: public schema, no credentials. Supported JSON Schema subset is
+// deliberately small so the same schema drives both Responses and local validation.
+const nullableText = maxLength => ({type:['string','null'], minLength:1, maxLength});
+const INTENT_SCHEMA = {
+  type:'object', additionalProperties:false,
+  properties:{
+    delayMinutes:{type:'integer',minimum:0,maximum:720},
+    energy:{type:['integer','null'],minimum:1,maximum:5},
+    weatherChange:{type:'string',enum:['unchanged','rain','clear']},
+    queueMinutes:{type:['integer','null'],minimum:0,maximum:720},
+    foodRequest:nullableText(60), visitRequest:nullableText(60),
+    targetPlaceId:nullableText(240),
+    needsClarification:{type:'boolean'}, clarificationQuestion:nullableText(180)
+  },
+  required:['delayMinutes','energy','weatherChange','queueMinutes','foodRequest','visitRequest','targetPlaceId','needsClarification','clarificationQuestion']
+};
+function emptyIntent(){return {delayMinutes:0,energy:null,weatherChange:'unchanged',queueMinutes:null,foodRequest:null,visitRequest:null,targetPlaceId:null,needsClarification:false,clarificationQuestion:null};}
+function check(value,schema){
+  const type=value===null?'null':Number.isInteger(value)?'integer':typeof value;
+  if(!(Array.isArray(schema.type)?schema.type:[schema.type]).includes(type))return false;
+  if(value===null)return true;
+  if(schema.enum&&!schema.enum.includes(value))return false;
+  if(type==='integer'&&(value<schema.minimum||value>schema.maximum))return false;
+  if(type==='string'&&(!value.trim()||value.length<(schema.minLength||0)||value.length>(schema.maxLength||Infinity)||/[\u0000-\u001f]/.test(value)))return false;
+  if(type==='object'){
+    if(Array.isArray(value))return false;
+    if(Object.keys(value).some(k=>!Object.hasOwn(schema.properties,k)))return false;
+    if(schema.required.some(k=>!Object.hasOwn(value,k)))return false;
+    return Object.entries(value).every(([k,v])=>check(v,schema.properties[k]));
+  }
+  return true;
+}
+function validateIntent(input,plan){
+  if(!check(input,INTENT_SCHEMA))throw Error('意图数据格式或数值不合法，未应用调整。');
+  if(input.needsClarification!==Boolean(input.clarificationQuestion))throw Error('澄清状态不一致，未应用调整。');
+  if(input.targetPlaceId!==null&&!plan.items.some(p=>p.id===input.targetPlaceId&&!p.completed))throw Error('目标地点不在待到访行程中，未应用调整。');
+  if(input.queueMinutes!==null&&!input.targetPlaceId&&!input.needsClarification)throw Error('排队需求缺少目标地点，请补充。');
+  const actionable=input.delayMinutes>0||input.energy!==null||input.weatherChange!=='unchanged'||input.queueMinutes!==null||input.foodRequest!==null||input.visitRequest!==null;
+  if(!actionable&&!input.needsClarification)throw Error('没有识别到可执行的需求，未应用调整。');
+  return {...input};
+}
+function intentLabels(intent,plan){
+  const labels=[];
+  if(intent.delayMinutes)labels.push(`迟到 ${intent.delayMinutes} 分钟`);
+  if(intent.energy!==null)labels.push(`体力 ${intent.energy}/5`);
+  if(intent.weatherChange!=='unchanged')labels.push(intent.weatherChange==='rain'?'下雨':'雨停');
+  if(intent.queueMinutes!==null)labels.push(`排队 ${intent.queueMinutes} 分钟${intent.targetPlaceId?' · '+([...plan.items,...(plan.deferred||[])].find(p=>p.id===intent.targetPlaceId)?.title||'指定地点'):''}`);
+  if(intent.foodRequest)labels.push(`想吃：${intent.foodRequest}`);
+  if(intent.visitRequest)labels.push(`想逛：${intent.visitRequest}`);
+  if(intent.needsClarification)labels.push('需要补充信息');
+  return labels;
+}
+
+const toMinutes = value => { const [h,m]=value.split(':').map(Number); return h*60+m; };
+const clock = value => `${String(Math.floor(value/60)).padStart(2,'0')}:${String(value%60).padStart(2,'0')}`;
+const clone = value => JSON.parse(JSON.stringify(value));
+const normalize = text => text.toLowerCase().replace(/[\s·（）()]/g,'');
+function validatePreferences(input) {
+  if(!input || typeof input!=='object') throw new Error('请先填写旅行偏好。');
+  const p={...input,city:cityKey(String(input.city||'').slice(0,40)),hotel:String(input.hotel||'').trim().slice(0,60),budget:Number(input.budget),energy:Number(input.energy),must:String(input.must||'').slice(0,180)};
+  if(!p.city || !p.hotel) throw new Error('请填写目的地和住宿区域。');
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(p.date)||Number.isNaN(Date.parse(p.date))) throw new Error('请选择有效的旅行日期。');
+  if(!/^([01]\d|2[0-3]):[0-5]\d$/.test(p.wake)) throw new Error('请选择有效的起床时间。');
+  if(!Number.isFinite(p.budget)||p.budget<50||p.budget>50000) throw new Error('预算请填写 50–50,000 元。');
+  if(!Number.isInteger(p.energy)||p.energy<1||p.energy>5) throw new Error('体力需为 1–5。');
+  p.interests=Array.isArray(p.interests)?p.interests.filter(x=>INTERESTS.includes(x)):[];
+  p.mood=MOODS.includes(p.mood)?p.mood:MOODS[0];
+  return p;
+}
+const baseTransfer=(a,b,energy)=>!a?15:(a.zone===b.zone?(energy<=2?15:10):(energy<=2?30:25));
+function schedule(items,start,energy,completed=[]) {
+  let time=start;let previous=completed.at(-1);
+  return items.map(item=>{const transfer=baseTransfer(previous,item,energy);const s={...item,transfer,start:time+transfer,end:time+transfer+item.duration,completed:false};time=s.end;previous=item;return s;});
+}
+function totalCost(items){return items.reduce((s,p)=>s+p.cost,0);}
+const effectiveEnergy=p=>p.mood==='慢慢放空'?Math.min(2,p.energy):p.energy;
+const countFor=(p,e)=>Math.min(8,Math.max(3,2+e+(p.mood==='多点探索'?1:0)));
+function fitPlan(items, start, prefs, completed=[]) {
+  const maxCount=countFor(prefs,effectiveEnergy(prefs));
+  let keep=[...items], deferred=[], removed=[];
+  // There are no asserted business opening hours. 21:00 is our demo day-end policy.
+  const trim=(p,reason)=>{keep=keep.filter(x=>x.id!==p.id);(p.must?deferred:removed).push({...p,reason});};
+  while(keep.length>maxCount){const candidate=[...keep].reverse().find(x=>!x.must&&x.category!=='美食'&&x.category!=='休息')||[...keep].reverse().find(x=>x.category!=='美食'&&x.category!=='休息');if(!candidate)break;trim(candidate,'当前体力下减少停靠点，留出休息空间。');}
+  let timed=schedule(keep,start,prefs.energy,completed);
+  while(timed.length&&timed.at(-1).end>21*60){const candidate=[...keep].reverse().find(x=>!x.must&&x.category!=='美食')||keep.at(-1);trim(candidate,'今天 21:00 前放不下完整停留时间，避免压缩体验。');timed=schedule(keep,start,prefs.energy,completed);}
+  // A reserved transit allowance is a demo assumption; shopping is always excluded.
+  const allowance=keep.length?Math.min(60,Math.round(prefs.budget*.12)):0;
+  while(totalCost([...completed,...keep])+allowance>prefs.budget){const candidate=[...keep].reverse().find(x=>!x.must&&x.cost>0&&x.category!=='美食'&&x.category!=='休息');if(!candidate)break;trim(candidate,'为必要餐饮和交通留出预算，移除可选付费活动。');}
+  return {items:schedule(keep,start,prefs.energy,completed),deferred,removed,allowance};
+}
+function unknownPlace(name,index,prefs){return {id:`user-${index}-${name}`,title:name,area:'位置待核实',category:'自选地点',indoor:null,duration:60,cost:0,zone:0,must:true,unknown:true,description:'你添加的必去地点。位置、费用和开放时间待核实；暂预留 60 分钟。'};}
+function generatePlan(input) {
+  const prefs=validatePreferences(input),catalog=catalogFor(prefs.city,prefs.hotel);
+  let required=[...new Set(prefs.must.split(/[,，、;；\n]/).map(x=>x.trim()).filter(Boolean))];
+  const must=required.map((name,index)=>{const p=catalog.places.find(p=>[p.title,...p.aliases].some(a=>normalize(a)===normalize(name)));return p?{...p,must:true}:unknownPlace(name,index,prefs);});
+  const used=new Set(must.map(p=>p.id));
+  let optional=catalog.places.filter(p=>!used.has(p.id)&&!p.id.endsWith('dinner'));
+  const score=p=>(prefs.interests.includes(p.category)?3:0)+(prefs.mood==='慢慢放空'&&p.indoor?2:0)+(p.area===prefs.hotel?2:0);
+  optional.sort((a,b)=>score(b)-score(a));
+  const food=catalog.places.find(p=>p.id.endsWith('lunch'));
+  const coffee=catalog.places[0];
+  let selected=[...must];
+  for(const p of [coffee,food,...optional])if(p&&!selected.some(x=>x.id===p.id)&&selected.length<countFor(prefs,effectiveEnergy(prefs)))selected.push({...p,must:false});
+  // Rank nearby sample zones; no coordinates or routing APIs are implied.
+  const homeZone=catalog.areas.indexOf(prefs.hotel);
+  selected.sort((a,b)=>Math.abs(a.zone-Math.max(0,homeZone))-Math.abs(b.zone-Math.max(0,homeZone)));
+  selected=selected.filter(p=>p.id!==coffee.id);selected.unshift({...coffee,must:must.some(x=>x.id===coffee.id)});
+  // Put lunch around the middle, after the first activity.
+  const lunch=selected.find(x=>x.id===food?.id);if(lunch){selected=selected.filter(x=>x.id!==lunch.id);selected.splice(Math.min(2,selected.length),0,lunch);}
+  const start=toMinutes(prefs.wake)+30;
+  const fit=fitPlan(selected,start,prefs);
+  return {
+    id:globalThis.crypto?.randomUUID?.()||`plan-${Date.now()}`,prefs,version:1,createdAt:new Date().toISOString(),updatedAt:new Date().toISOString(),knownCity:catalog.known,
+    items:fit.items,deferred:fit.deferred,allowance:fit.allowance,start,conditions:{rain:false,energy:prefs.energy},changes:[],lastEvent:null,previous:null,
+    generationNotes:[`从 ${prefs.hotel} 出发，按示例区域组织路线；交通时间仅为估算。`,`优先安排 ${must.length} 个必去地点，按「${prefs.mood}」和兴趣选择其他活动。`,...fit.removed.map(p=>`${p.title}：${p.reason}`)],
+  };
+}
+function parseEvent(raw) {
+  if(typeof raw!=='string'||!raw.trim()) throw new Error('写一句现在的情况吧。');
+  const text=raw.trim().slice(0,300);
+  const rainOff=/(不下雨|没有下雨|雨停|放晴|不再下雨|stopped raining)/i.test(text);
+  const rain=!rainOff&&/(下雨|暴雨|雨天|raining|rainy)/i.test(text);
+  const late=/(睡过头|晚起|迟到|起晚|晚了|overslept|late)/i.test(text);
+  const tired=!/(不累|不疲|精力充沛)/.test(text)&&/(很累|累了|累死|累|疲|走不动|腿|tired|exhaust)/i.test(text);
+  const energetic=/(恢复体力|精力充沛|精神了|不累了|recharged)/i.test(text);
+  const queue=/(排队|queue|waiting)/i.test(text);
+  const food=/(想吃|吃点|吃个|吃烤肉|吃寿司|饿了|hungry|want.*eat)/i.test(text);
+  const shop=/(想逛|逛街|购物|想去|shopping|want.*visit)/i.test(text);
+  const number=text.match(/(\d+(?:\.\d+)?|半|一|两|二|三|四|五)\s*(小时|分钟|hours?|minutes?|h\b|min\b)/i);
+  const n=number?({'半':.5,'一':1,'两':2,'二':2,'三':3,'四':4,'五':5}[number[1]]??Number(number[1])):null;
+  const duration=number?Math.round(n*(/小时|hour|^h$/i.test(number[2])?60:1)):null;
+  // Bind numbers to their intent in compound requests, not to the first number globally.
+  const segmentDuration=(pattern,fallback)=>{const match=text.match(pattern);if(!match)return fallback;const raw=match[1],num=({'半':.5,'一':1,'两':2,'二':2,'三':3,'四':4,'五':5}[raw]??Number(raw));return Math.round(num*(/小时|hour|^h$/i.test(match[2])?60:1));};
+  if(![rain,rainOff,late,tired,energetic,queue,food,shop].some(Boolean))throw new Error('这句话暂时没有匹配到规则。试试“下雨了”“睡过头两小时”或“想吃烤肉”。');
+  if(late&&queue&&(!/睡过头|晚起|迟到|起晚|晚了/i.test(text)))throw new Error('请分别说明迟到和排队的时长。');
+  return {text,rain,rainOff,late,tired,energetic,queue,food,shop,
+    delay:late?Math.min(720,segmentDuration(/(?:睡过头|晚起|迟到|起晚|晚了|overslept|late)[^\d半一两二三四五]{0,8}(\d+(?:\.\d+)?|半|一|两|二|三|四|五)\s*(小时|分钟|hours?|minutes?|h\b|min\b)/i,late&&!queue?(duration??120):120)):0,
+    queueMinutes:queue?Math.min(720,segmentDuration(/(?:排队|queue|waiting)[^\d半一两二三四五]{0,8}(\d+(?:\.\d+)?|半|一|两|二|三|四|五)\s*(小时|分钟|hours?|minutes?|h\b|min\b)/i,queue&&!late?(duration??90):90)):0,
+    defaults:[late&&duration===null?'迟到未写时长，按 2 小时演示。':null,queue&&duration===null?'排队未写时长，按 90 分钟演示。':null].filter(Boolean)
+  };
+}
+function insertion(plan,kind,text,preferredName){
+  const food=kind==='food';
+  const name=preferredName||(food?(text.match(/(?:想吃|吃点|吃个)\s*([^，。！!？?\n]{1,18})/)?.[1]||'当地美食'):(text.match(/(?:想去|想逛)\s*([^，。！!？?\n]{1,18})/)?.[1]||'室内商店'));
+  const last=plan.items.find(x=>!x.completed);
+  return {id:`${kind}-${plan.version+1}`,title:food?`${name}时间（待选店）`:`${name}（待核实）`,category:food?'美食':'购物',area:last?.area||plan.prefs.hotel,indoor:food?true:null,unknown:true,zone:last?.zone||0,duration:food?60:60,cost:food?Math.min(100,Math.round(plan.prefs.budget*.2)):0,must:false,description:'根据你的临时想法预留时间；地点、营业和交通待核实。'};
+}
+function replan(original,{text='',energy,now,targetId}={}) {
+  if(!original?.items)throw new Error('请先生成一个计划。');
+  if(now!==undefined&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(now))throw new Error('请选择有效的调整时间。');
+  if(energy!==undefined&&(!Number.isInteger(energy)||energy<1||energy>5))throw new Error('体力需为 1–5。');
+  const event=energy!==undefined?{text:`体力切换为 ${energy} / 5`,defaults:[]}:parseEvent(text);
+  return replanCore(original,{event,energy,now,targetId});
+}
+function replanWithIntent(original,intent,{text='',now}={}) {
+  const i=validateIntent(intent,original);
+  if(i.needsClarification)throw Error(i.clarificationQuestion);
+  if(now!==undefined&&!/^([01]\d|2[0-3]):[0-5]\d$/.test(now))throw Error('请选择有效的调整时间。');
+  const event={text,defaults:[],delay:i.delayMinutes,late:i.delayMinutes>0,rain:i.weatherChange==='rain',rainOff:i.weatherChange==='clear',queue:i.queueMinutes!==null,queueMinutes:i.queueMinutes||0,food:i.foodRequest!==null,shop:i.visitRequest!==null,foodName:i.foodRequest,visitName:i.visitRequest};
+  return replanCore(original,{event,energy:i.energy??undefined,now,targetId:i.targetPlaceId??undefined});
+}
+function replanCore(original,{event,energy,now,targetId}) {
+  const plan=clone(original);delete plan.previous;
+  plan.previous=clone({...original,previous:null});
+  plan.version++;plan.updatedAt=new Date().toISOString();
+  plan.prefs.energy=energy??(event.tired?2:event.energetic?4:plan.prefs.energy);
+  plan.conditions={...plan.conditions,energy:plan.prefs.energy,rain:event.rainOff?false:event.rain?true:plan.conditions.rain};
+  const completed=plan.items.filter(p=>p.completed), pending=plan.items.filter(p=>!p.completed);
+  const latestComplete=completed.reduce((s,p)=>Math.max(s,p.end),0);
+  // now is the baseline before the newly reported delay; no past visits are silently marked done.
+  let start=Math.max(now?toMinutes(now):plan.start,latestComplete,plan.start)+(event.delay||0);
+  let working=pending.map(p=>({...p})),removed=new Map(),deferred=[...plan.deferred],reasons=new Map();
+  const remove=(p,reason,forceDefer=false)=>{working=working.filter(x=>x.id!==p.id);removed.set(p.id,{type:p.must||forceDefer?'移动':'删除',reason});if(p.must||forceDefer){deferred=deferred.filter(x=>x.id!==p.id);deferred.push({...p,reason});}};
+  if(plan.conditions.rain)for(const p of [...working])if(p.indoor===false)remove(p,'持续下雨，户外活动暂时移出当天；未自动预订其他日期。');
+  const target=targetId?working.find(x=>x.id===targetId):(working.find(x=>x.category!=='咖啡'&&x.category!=='美食')||working[0]);
+  if(event.queue&&target){if(event.queueMinutes>=45)remove(target,`你报告排队 ${event.queueMinutes} 分钟；优先把时间留给其他体验。`);else{target.duration+=event.queueMinutes;reasons.set(target.id,`计入你报告的 ${event.queueMinutes} 分钟排队时间。`);}}
+  if(plan.prefs.energy<=2){
+    const candidate=working.find(x=>!x.must&&x.indoor===false);if(candidate)remove(candidate,'低体力模式减少户外步行和停靠点。');
+    const hasRest=working.some(x=>x.category==='休息');
+    if(!hasRest)working.splice(Math.min(1,working.length),0,{id:`rest-${plan.version}`,title:plan.prefs.energy===1?'回住宿休息':'坐下来，歇一会儿',area:plan.prefs.hotel,zone:0,category:'休息',indoor:true,duration:45,cost:0,must:false,description:'预留 45 分钟休息，具体休息地点待选择。'});
+  }
+  const catalog=catalogFor(plan.prefs.city,plan.prefs.hotel);
+  if(plan.conditions.rain&&removed.size){
+    const alternative=catalog.places.find(p=>p.indoor&&p.category!=='美食'&&p.category!=='咖啡'&&!completed.some(x=>x.id===p.id)&&!working.some(x=>x.id===p.id)&&!deferred.some(x=>x.id===p.id)&&!removed.has(p.id));
+    if(alternative&&plan.prefs.energy>1)working.splice(Math.min(2,working.length),0,{...alternative,must:false});
+  }
+  if(event.food){const p=insertion(plan,'food',event.text,event.foodName);const meal=working.find(x=>x.category==='美食'&&!x.must);if(meal)remove(meal,'用你现在想吃的食物替换原来的用餐占位。');working.splice(Math.min(1,working.length),0,p);}
+  if(event.shop){const p=insertion(plan,'shop',event.text,event.visitName);working.splice(Math.min(2,working.length),0,p);}
+  // Rain stopping or energy recovery can reconsider prior deferred must-see places.
+  if(event.rainOff||(energy!==undefined&&energy>original.prefs.energy)||event.energetic){for(const p of [...deferred])if((!plan.conditions.rain||p.indoor!==false)&&!completed.some(x=>x.id===p.id)&&!working.some(x=>x.id===p.id)){working.push({...p});deferred=deferred.filter(x=>x.id!==p.id);reasons.set(p.id,'条件改善，重新尝试安排此前待另日的必去地点。');}}
+  const fit=fitPlan(working,start,plan.prefs,completed);
+  for(const p of [...fit.removed,...fit.deferred])removed.set(p.id,{type:p.must?'移动':'删除',reason:p.reason});
+  for(const p of fit.deferred){deferred=deferred.filter(x=>x.id!==p.id);deferred.push(p);}
+  plan.items=[...completed,...fit.items];plan.deferred=deferred;plan.start=start;plan.allowance=fit.allowance;
+  const changes=[];
+  for(const old of original.items){
+    const next=plan.items.find(x=>x.id===old.id);
+    if(!next){changes.push({id:old.id,title:old.title,...(removed.get(old.id)||{type:'删除',reason:'为当前安排腾出时间。'}),before:clock(old.start),after:plan.deferred.some(x=>x.id===old.id)?'待另日安排':null});continue;}
+    const moved=next.start!==old.start;
+    changes.push({id:old.id,title:old.title,type:moved?'移动':'保留',before:clock(old.start),after:clock(next.start),reason:old.completed?'已到访，保持原记录。':reasons.get(old.id)||(moved?'根据新的出发时间、活动和交通缓冲顺延。':old.must?'符合当前条件，优先保留必去地点。':'符合当前体力、天气和时间安排。')});
+  }
+  for(const p of plan.items)if(!original.items.some(x=>x.id===p.id))changes.push({id:p.id,title:p.title,type:'新增',before:null,after:clock(p.start),reason:reasons.get(p.id)||(p.category==='休息'?'低体力模式增加休息，减少连续活动。':p.id.startsWith('food-')||p.id.startsWith('shop-')?'为你的临时想法预留一段时间；具体地点待核实。':'用室内活动替代雨天户外体验。')});
+  plan.changes=changes;plan.lastEvent=event;return plan;
+}
+function summary(plan){const items=plan.items;const estimated=totalCost(items)+plan.allowance;return {count:items.length,cost:estimated,overBudget:estimated>plan.prefs.budget,unknownCost:items.some(x=>x.unknown),hours:items.length?((items.at(-1).end-Math.min(plan.start,items[0].start-(items[0].transfer||0)))/60).toFixed(1):'0',end:items.length?clock(items.at(-1).end):'—'};}
+
+async function requestReplan(plan,input){
+  if(location.protocol==='file:')throw Error('单文件版仅支持关键词规则；AI 请通过 Node.js 服务打开。');
+  const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),25000);
+  try{
+    const snapshot={...plan,previous:null,analysis:undefined,changes:[],lastEvent:null};
+    const response=await fetch('/api/replan',{method:'POST',headers:{'Content-Type':'application/json'},signal:controller.signal,body:JSON.stringify({mode:input.mode||'ai',plan:snapshot,text:input.text,now:input.now,targetId:input.targetId||null})});
+    let body;try{body=await response.json();}catch{throw Error('后端没有返回有效结果，请启动 Node.js 服务或使用关键词规则。');}
+    if(!response.ok)throw Error(body.error?.message||'AI 请求失败，行程未改变。');
+    return body;
+  }catch(err){if(controller.signal.aborted)throw Error('AI 请求超时，行程未改变。可重试或手动切换关键词规则。');if(err instanceof TypeError)throw Error('无法连接后端，行程未改变。可手动切换关键词规则。');throw err;}
+  finally{clearTimeout(timeout);}
+}
+
+const $ = selector => document.querySelector(selector);
+const esc = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const STORAGE='sidequest.plans.v1';
+const today=new Date();
+const localDate=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+let interests=['美食','城市漫步','咖啡'],mood=MOODS[0],busy=false,isSample=true,toastTimer;
+let history=[],storageAvailable=true,storageMessage='';
+let aiConfigured=false;let providerName='已配置的模型服务';
+const sourceLabels={mock:'Mock 模拟响应 · 非真实 AI',ai:'AI 识别 · 规则执行',rules:'关键词规则',local:'本地关键词规则'};
+try{const saved=JSON.parse(localStorage.getItem(STORAGE)||'[]');if(!Array.isArray(saved))throw Error('invalid');history=saved.filter(validStoredPlan).slice(0,6);if(history.length!==saved.length)storageMessage='部分旧计划格式不兼容，已跳过。';}catch{storageMessage='历史记录无法读取，当前会话仍可使用。';history=[];}
+let plan=generatePlan({city:'巴黎',date:localDate,hotel:'圣日耳曼 / 左岸',wake:'09:00',budget:600,must:'卢浮宫，塞纳河畔散步',interests,mood,energy:4});
+function validStoredPlan(value){try{validatePreferences(value.prefs);return typeof value.id==='string'&&typeof value.updatedAt==='string'&&Number.isFinite(value.version)&&Number.isFinite(value.start)&&Number.isFinite(value.allowance)&&typeof value.conditions?.rain==='boolean'&&Array.isArray(value.items)&&Array.isArray(value.deferred)&&Array.isArray(value.changes)&&Array.isArray(value.generationNotes)&&[...value.items,...value.deferred].every(x=>typeof x.id==='string'&&typeof x.title==='string'&&typeof x.category==='string'&&Number.isFinite(x.duration)&&Number.isFinite(x.cost))&&value.items.every(x=>Number.isFinite(x.start)&&Number.isFinite(x.end));}catch{return false;}}
+function toast(text){clearTimeout(toastTimer);$('#toast').textContent=text;$('#toast').hidden=false;toastTimer=setTimeout(()=>$('#toast').hidden=true,4200);}
+function persist(){if(isSample)return;const snapshot=JSON.parse(JSON.stringify({...plan,previous:null}));history=[snapshot,...history.filter(x=>x.id!==plan.id)].slice(0,6);try{localStorage.setItem(STORAGE,JSON.stringify(history));storageAvailable=true;}catch{storageAvailable=false;toast('浏览器未能保存记录。当前计划可继续使用，刷新后可能丢失。');}$('#history-count').textContent=history.length;}
+function renderChips(){$('#interest-chips').innerHTML=INTERESTS.map(x=>`<button type="button" class="chip" data-interest="${x}" aria-pressed="${interests.includes(x)}">${x}</button>`).join('');$('#mood-chips').innerHTML=MOODS.map(x=>`<button type="button" class="chip" data-mood="${x}" aria-pressed="${mood===x}">${x}</button>`).join('');}
+function syncForm(){const p=plan.prefs;for(const key of ['city','date','hotel','wake','budget','must','energy'])$(`[name=${key}]`).value=p[key];interests=[...p.interests];mood=p.mood;renderChips();$('#form-energy-value').textContent=`${p.energy} / 5`;}
+function render(){
+ const p=plan.prefs,s=summary(plan),completed=plan.items.filter(x=>x.completed),firstPending=plan.items.find(x=>!x.completed);
+ $('#plan-title').textContent=`${p.city}的一天`;$('#version-tag').textContent=isSample?'示例预览':`PLAN V${plan.version}`;$('#plan-eyebrow').textContent=isSample?'A DAY IN PARIS':'YOUR DAY, YOUR WAY';
+ $('#plan-meta').innerHTML=`<span>${esc(p.date)}</span><span>住宿 · ${esc(p.hotel)}</span><span>${esc(p.wake)} 起床</span>`;
+ const warnings=[];if(isSample)warnings.push('这是巴黎示例。调整旅行偏好，生成属于你的一天。');else warnings.push(`${sourceLabels[plan.analysis?.source]||'规则规划'} · 旅行数据为模拟 · ${storageAvailable?'已自动保存到本机':'仅当前会话保存'}${plan.conditions.rain?' · 雨天模式':''}${p.energy<=2?' · 低体力模式':''}`);
+ if(!plan.knownCity)warnings.push('这座城市暂无地点库，显示通用占位行程，需自行核实。');
+ if(s.overBudget)warnings.push(`预计超预算 ¥${s.cost-p.budget}：必要餐饮、已到访或必去项目仍有费用，请提高预算或减少必去地点。`);
+ if(s.unknownCost)warnings.push('含待核实地点：部分费用是占位估算，未核价项目可能未计入，合计不是完整报价。');
+ if(p.energy<=2&&plan.items.filter(x=>!x.completed&&x.must).length>3)warnings.push('必去地点较多，低体力下仍可能吃力，可减少必去数量。');
+ $('#plan-notice').textContent=warnings.join(' ');
+ $('#plan-stats').innerHTML=`<div class="stat"><strong>${s.count}</strong><small>站</small><p>${completed.length?`已到访 ${completed.length} 站`:'今天的小发现'}</p></div><div class="stat"><strong>${s.hours}</strong><small>小时</small><p>含交通休息 · 估算</p></div><div class="stat"><strong>¥${s.cost}</strong><p>费用估算 / 预算 ¥${p.budget}</p></div>`;
+ $('#timeline').innerHTML=plan.items.length?plan.items.map((item,index)=>{
+ const change=plan.changes.find(x=>x.id===item.id),badge=change&&change.type!=='保留'?`<span class="badge ${change.type==='新增'?'added':'moved'}">${change.type}</span>`:'';
+ const canComplete=item.id===firstPending?.id,canUndo=item.id===completed.at(-1)?.id;
+ const action=item.completed?(canUndo?`<button class="done-button" data-done="${esc(item.id)}">✓ 已到访 · 撤销</button>`:'<span class="muted">✓ 已到访</span>'):(canComplete?`<button class="done-button" data-done="${esc(item.id)}">标记已到访</button>`:'<span class="muted">待到访</span>');
+ return `<article class="stop"><div class="time-stamp">${clock(item.start)}</div><div class="stop-card ${item.completed?'completed':''}"><div class="stop-top"><span class="stop-kind">${esc(item.category)} / ${item.indoor===null?'环境待核实':item.indoor?'室内':'户外'}</span><span class="stop-badges">${badge}${item.must?'<span class="badge must">必去</span>':''}</span></div><h3>${esc(item.title)}</h3><div class="stop-detail"><span>${clock(item.start)}–${clock(item.end)}</span><span>${item.unknown?(item.cost>0?`约 ¥${item.cost} · 待核实`:'费用待核实'):`¥${item.cost} / 人`}</span></div><p class="stop-desc">${esc(item.description)}</p><div class="stop-bottom"><span class="stop-area">${esc(item.area)} · ${item.unknown?'自选占位':'模拟信息'}</span>${action}</div></div>${index<plan.items.length-1?`<div class="transfer">↓　${p.energy<=2?'优先乘车':'交通'}缓冲 ${plan.items[index+1].transfer} 分钟 · 模拟</div>`:''}</article>`;
+ }).join(''):'<div class="no-plan">今天剩余时间已不足以安排完整活动。<br>必去地点会留在下方，不会自动预约或跨日排入。你可以调整起床时间，重新生成计划。</div>';
+ $('#deferred').innerHTML=plan.deferred.length?`<section class="deferred"><h3>留给另一天 · ${plan.deferred.length} 个地点</h3>${plan.deferred.map(x=>`<p><strong>${esc(x.title)}</strong><br>${esc(x.reason)}</p>`).join('')}<p class="muted" style="margin-top:8px">仅加入待安排清单，尚未排入任何日期。</p></section>`:'';
+ $('#plan-tail').textContent=plan.items.length?`${s.end} 结束 · 另预留模拟交通费 ¥${plan.allowance}（已计入合计），不含住宿、购物；起床后预留 30 分钟准备。`:'可以把剩下的时间留给休息。';
+ $('#energy-steps').innerHTML=ENERGY.map((x,i)=>`<button type="button" data-energy="${i+1}" aria-pressed="${p.energy===i+1}" aria-label="体力 ${i+1}：${x}" title="${x}">${i+1}</button>`).join('');$('#energy-description').textContent=ENERGY[p.energy-1];renderReasons();$('#history-count').textContent=history.length;
+}
+function renderReasons(){
+ if(!plan.lastEvent){$('#reason-panel').innerHTML=`<p class="eyebrow">THE THOUGHT BEHIND YOUR DAY</p><h2 style="margin-top:9px">这样安排，是因为…</h2><ul class="reason-list">${plan.generationNotes.map((x,i)=>`<li>${i===0?'从住宿出发':'留出弹性'}<p>${esc(x)}</p></li>`).join('')}</ul>`;return;}
+ let recognition='';
+ try{if(plan.analysis){validateIntent(plan.analysis.intent,{items:plan.analysis.intent.targetPlaceId?[{id:plan.analysis.intent.targetPlaceId,completed:false}]:[]});recognition=`<div class="recognition-preview"><strong>${esc(sourceLabels[plan.analysis.source]||'识别结果')}</strong><p>${esc(intentLabels(plan.analysis.intent,plan).join(' · '))}</p><small>下方原因来自规则实际执行结果</small></div>`;}}catch{}
+ const counts=['保留','删除','移动','新增'].map(x=>`${x} ${plan.changes.filter(c=>c.type===x).length}`).join(' · ');
+ $('#reason-panel').innerHTML=`<p class="eyebrow">A NEW WAY TO GO</p><h2 style="margin-top:9px">已为你调整好</h2><p class="reason-summary">“${esc(plan.lastEvent.text)}”</p>${recognition}<div class="change-counts">${counts}</div>${plan.lastEvent.defaults?.length?`<p>${esc(plan.lastEvent.defaults.join(' '))}</p>`:''}<ul class="reason-list">${plan.changes.filter(c=>c.type!=='保留').map(changeMarkup).join('')}</ul><details><summary>查看保留的 ${plan.changes.filter(c=>c.type==='保留').length} 项及原因</summary><ul class="reason-list">${plan.changes.filter(c=>c.type==='保留').map(changeMarkup).join('')}</ul></details>${plan.previous?'<button class="undo-button" id="undo-replan">撤销这次调整</button>':''}`;
+}
+function changeMarkup(c){return `<li><span class="badge ${c.type==='新增'?'added':'moved'}">${esc(c.type)}</span><strong>${esc(c.title)}</strong>${c.before||c.after?`<p>${esc(c.before||'新安排')} ${c.after?'→ '+esc(c.after):'→ 移出当天'}</p>`:''}<p>${esc(c.reason)}</p></li>`;}
+function baselineTime(){const done=plan.items.filter(x=>x.completed);return clock(Math.min(23*60+59,Math.max(plan.start,done.at(-1)?.end||0)));}
+function openChange(){
+ $('#change-input').value='';$('#change-error').hidden=true;$('#local-fallback').hidden=true;$('#recognition-preview').hidden=true;$('#change-time').value=baselineTime();const pending=plan.items.filter(x=>!x.completed);
+ $('#change-target').innerHTML=pending.length?pending.map(x=>`<option value="${esc(x.id)}">${esc(x.title)}</option>`).join(''):'<option value="">无待到访地点</option>';
+ const target=pending.find(x=>x.category!=='咖啡'&&x.category!=='美食');if(target)$('#change-target').value=target.id;
+ $('#change-dialog').showModal();$('#change-input').focus();
+}
+function finishMutation(message){isSample=false;persist();render();toast(storageAvailable?message:'当前计划已更新，但浏览器拒绝保存；刷新后可能丢失。');}
+async function withLoading(action){if(busy)return;busy=true;const buttons=[$('#generate-button'),$('#replan-button'),$('#local-fallback'),$('#planning-mode')];buttons.forEach(x=>x.disabled=true);$('#timeline').classList.add('loading');$('#timeline').setAttribute('aria-busy','true');try{return await action();}finally{busy=false;buttons.forEach(x=>x.disabled=false);$('#timeline').classList.remove('loading');$('#timeline').setAttribute('aria-busy','false');}}
+async function applyReplan(input,{local=false}={}){
+ return withLoading(async()=>{
+  const mode=$('#planning-mode').value;
+  const oldPlan=plan;
+  if(input.energy!==undefined||local||mode==='rules'){
+   const next=replan(oldPlan,input);
+   delete next.analysis;
+   plan=next;
+  }else{
+   const result=await requestReplan(oldPlan,{...input,mode});
+   if(result.status==='needs_clarification'){
+    $('#recognition-preview').hidden=false;
+    $('#recognition-preview').textContent=`${sourceLabels[mode]}：${intentLabels(result.intent,oldPlan).join(' · ')}。${result.message}`;
+    return {clarification:true};
+   }
+   if(result.status!=='applied'||!result.plan)throw Error('返回结果不完整，行程未改变。');
+   result.plan.previous={...oldPlan,previous:null};
+   plan=result.plan;
+  }
+  finishMutation('路线已更新，每一项调整都有原因。');
+  return {version:plan.version,changes:plan.changes,summary:summary(plan)};
+ });
+}
+$('#plan-form').addEventListener('submit',async e=>{e.preventDefault();await withLoading(()=>{try{const data=Object.fromEntries(new FormData(e.target));plan=generatePlan({...data,interests,mood});finishMutation('今天的计划已生成并保存在本机。');if(matchMedia('(max-width:760px)').matches)$('#plan-title').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth',block:'start'});}catch(err){toast(err.message);}});});
+$('#interest-chips').addEventListener('click',e=>{const b=e.target.closest('[data-interest]');if(!b)return;const x=b.dataset.interest;interests=interests.includes(x)?interests.filter(i=>i!==x):[...interests,x];renderChips();});
+$('#mood-chips').addEventListener('click',e=>{const b=e.target.closest('[data-mood]');if(!b)return;mood=b.dataset.mood;renderChips();});
+$('#form-energy').addEventListener('input',e=>$('#form-energy-value').textContent=`${e.target.value} / 5`);
+$('#energy-steps').addEventListener('click',async e=>{const b=e.target.closest('[data-energy]');if(!b||busy)return;const energy=Number(b.dataset.energy);if(energy===plan.prefs.energy)return;await applyReplan({energy,now:baselineTime()});$('#form-energy').value=energy;$('#form-energy-value').textContent=`${energy} / 5`;});
+$('#timeline').addEventListener('click',e=>{if(busy)return;const b=e.target.closest('[data-done]');if(!b)return;const item=plan.items.find(x=>x.id===b.dataset.done);if(!item)return;item.completed=!item.completed;plan.previous=null;plan.updatedAt=new Date().toISOString();finishMutation(item.completed?'已记录到访，之后重排会保留这一站。':'已撤销到访记录。');});
+$('#reason-panel').addEventListener('click',e=>{if(e.target.closest('#undo-replan')&&plan.previous&&!busy){plan=plan.previous;finishMutation('已恢复调整前的行程。');$('#form-energy').value=plan.prefs.energy;$('#form-energy-value').textContent=`${plan.prefs.energy} / 5`;}});
+for(const button of document.querySelectorAll('#open-change,#open-change-side'))button.addEventListener('click',openChange);
+$('#event-chips').innerHTML=['睡过头两小时','突然下雨了','排队90分钟','我现在很累','想吃烤肉','想去逛街'].map(x=>`<button type="button" class="chip" data-event="${x}">${x}</button>`).join('');
+$('#event-chips').addEventListener('click',e=>{const b=e.target.closest('[data-event]');if(b){$('#change-input').value=b.dataset.event;$('#change-input').focus();$('#change-error').hidden=true;}});
+async function submitChange(local=false){
+ if(busy)return;
+ $('#change-error').hidden=true;$('#recognition-preview').hidden=true;$('#local-fallback').hidden=true;
+ try{
+  const result=await applyReplan({text:$('#change-input').value,now:$('#change-time').value,targetId:$('#change-target').value},{local});
+  if(result?.clarification)return;
+  $('#change-dialog').close();$('#form-energy').value=plan.prefs.energy;$('#form-energy-value').textContent=`${plan.prefs.energy} / 5`;
+ }catch(err){
+  $('#change-error').textContent=err.message;$('#change-error').hidden=false;$('#local-fallback').hidden=local;
+ }
+}
+$('#change-form').addEventListener('submit',e=>{e.preventDefault();submitChange();});
+$('#local-fallback').addEventListener('click',()=>{$('#planning-mode').value='rules';updateModeStatus();submitChange(true);});
+function updateModeStatus(){
+ const mode=$('#planning-mode').value;
+ $('#mode-status').textContent=mode==='mock'?'模拟测试：固定返回“下雨、体力 2”，忽略输入内容，不调用模型服务。':mode==='ai'?(aiConfigured?`由后端调用 ${providerName} 理解需求，规则引擎计算行程；旅行数据仍为模拟。`:'AI 尚未配置密钥/模型，或后端未连接。可手动切换关键词规则。'):'使用原有关键词规则，在浏览器内完成，不调用 AI。';
+}
+$('#planning-mode').addEventListener('change',updateModeStatus);
+if(location.protocol!=='file:')fetch('/api/health',{signal:AbortSignal.timeout(3000)}).then(r=>r.ok?r.json():Promise.reject()).then(data=>{aiConfigured=Boolean(data.aiConfigured);providerName=data.provider==='deepseek'?'DeepSeek':'OpenAI';$('#planning-mode option[value=ai]').textContent=`AI · ${providerName}`;updateModeStatus();}).catch(updateModeStatus);
+else{$('#planning-mode').value='rules';updateModeStatus();}
+
+function showHistory(){$('#history-list').innerHTML=history.length?history.map(x=>`<article class="history-item"><div><h3>${esc(x.prefs.city)}的一天</h3><p>${esc(x.prefs.date)} · ${x.items.length} 站 · V${x.version}</p><p>${esc(x.prefs.hotel)} · 体力 ${x.prefs.energy} / 5</p></div><button class="button" data-restore="${esc(x.id)}">打开计划 ↗</button></article>`).join(''):'<p class="empty-state">还没有保存的计划。<br>生成你的一天后，会自动保存在这里。</p>';$('#history-dialog').showModal();}
+$('#history-button').addEventListener('click',showHistory);
+$('#history-list').addEventListener('click',e=>{if(busy)return;const b=e.target.closest('[data-restore]');if(!b)return;const restored=history.find(x=>x.id===b.dataset.restore);if(!restored)return;plan=JSON.parse(JSON.stringify(restored));isSample=false;syncForm();render();$('#history-dialog').close();toast('已打开保存的计划。');});
+$('#today-nav').addEventListener('click',()=>$('.workspace').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion:reduce)').matches?'instant':'smooth'}));
+for(const b of document.querySelectorAll('[data-close]'))b.addEventListener('click',()=>document.getElementById(b.dataset.close).close());
+for(const d of document.querySelectorAll('dialog'))d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});
+syncForm();render();if(storageMessage)toast(storageMessage);
+// Optional progressive enhancement. Unsupported browsers remain fully functional.
+if(document.modelContext?.registerTool){
+ const lifecycle=new AbortController();const register=tool=>{try{Promise.resolve(document.modelContext.registerTool(tool,{signal:lifecycle.signal})).catch(()=>{});}catch{}};
+ register({name:'read_travel_plan',title:'查看当前旅行计划',description:'Read current local demo plan, simulated estimates and latest changes.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true,untrustedContentHint:true},execute:()=>({plan,simulated:true,sample:isSample})});
+ register({name:'replan_travel_day',title:'调整当天行程',description:'Apply a supported reported event to the current demo plan and save locally. Durations, costs and places are simulated.',inputSchema:{type:'object',properties:{text:{type:'string',minLength:1,maxLength:300}},required:['text'],additionalProperties:false},annotations:{readOnlyHint:false,untrustedContentHint:true},execute:async input=>{if(busy)throw Error('正在调整，请稍后再试。');if(!input||typeof input.text!=='string'||!input.text.trim()||input.text.length>300||Object.keys(input).some(x=>x!=='text'))throw Error('请提供 1–300 字的变化描述。');return applyReplan({text:input.text,now:baselineTime()});}});
+ window.addEventListener('pagehide',()=>lifecycle.abort(),{once:true});
+}
+</script></body>
+</html>

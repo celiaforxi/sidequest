@@ -1,0 +1,16 @@
+{
+  "name": "sidequest-travel-mvp",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "description": "A local-first dynamic travel replanning prototype with transparent simulated data.",
+  "scripts": {
+    "dev": "node server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build:standalone": "python3 build-standalone.py",
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  }
+}
